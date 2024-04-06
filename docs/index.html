@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+
+
+<!-- === Header Starts === -->
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <title>Joint Stroke Tracing and Correspondence for 2D Animation</title>
+
+  <link href="./assets/bootstrap.min.css" rel="stylesheet">
+  <link href="./assets/font.css" rel="stylesheet" type="text/css">
+  <link href="./assets/style.css" rel="stylesheet" type="text/css">
+</head>
+<!-- === Header Ends === -->
+
+
+<body>
+
+
+<!-- === Home Section Starts === -->
+<div class="section">
+  <!-- === Title Starts === -->
+    <div class="title">
+      <b>Joint Stroke Tracing and Correspondence for 2D Animation</b>
+    </div>
+  <!-- === Title Ends === -->
+  <div class="author">
+    <a href="http://mo-haoran.com/" target="_blank">Haoran Mo</a>,&nbsp;
+    <a href="http://cse.sysu.edu.cn/content/2537" target="_blank">Chengying Gao</a><sup>*</sup>,&nbsp;
+    <a href="http://cse.sysu.edu.cn/content/2523" target="_blank">Ruomei Wang</a>
+  </div>
+  <div class="institution">
+    Sun Yat-sen University
+  </div>
+  <br>
+  <div class="institution">
+    Accepted by <a href="https://dl.acm.org/journal/tog" target="_blank">ACM Transactions on Graphics</a>
+    <br>
+    (Presented at <a href="https://s2024.siggraph.org/" target="_blank">SIGGRAPH 2024</a>)
+  </div>
+  <div class="link">
+    <a href="https://dl.acm.org/doi/10.1145/3649890" target="_blank">[Paper]</a>&nbsp;
+    <a href="https://github.com/MarkMoHR/JoSTC" target="_blank">[Code]</a>
+  </div>
+  <div class="teaser">
+    <table width="100%" style="margin: 0pt auto; text-align: center; border-collapse: separate; border-spacing: 0pt;">
+      <tr>
+        <td width="80%"><img src="figures/teaser-sub1.png" width="100%"></td>
+        <td width="20%"><img src="figures/dynamic1.gif" width="100%"></td>
+      </tr>
+    </table>
+    <table width="100%" style="margin: 0pt auto; text-align: center; border-collapse: separate; border-spacing: 0pt;">
+      <tr>
+        <td width="80%"><img src="figures/teaser-sub2.png" width="100%"></td>
+        <td width="20%"><img src="figures/dynamic2.gif" width="100%"></td>
+      </tr>
+    </table>
+    <font size="3">
+      Given consecutive raster keyframes and a single vector drawing from the starting keyframe only, our method generates vector images for the remaining keyframes with one-to-one stroke correspondence. The framework trained with clean line drawings generalizes well to rough sketches. The generated results can be directly imported into an inbetweening system <a href="https://cacani.sg/" target="_blank">CACANi</a> to produce inbetween frames to form 2D animation.
+      Gunman from <a href="https://dcgi.fel.cvut.cz/home/sykorad/FTP-SC.html" target="_blank">paper</a><sup>[1]</sup> is courtesy of Eugene Babich ©2018 John Wiley & Sons Ltd. Bigvegas2 is from <a href="https://www.cs.toronto.edu/creativeflow/" target="_blank">Creative Flow+ dataset</a><sup>[2]</sup>.
+    </font>
+  </div>
+</div>
+<!-- === Home Section Ends === -->
+
+
+<!-- === Overview Section Starts === -->
+<div class="section">
+  <div class="title">Abstract</div>
+  <div class="body">
+    To alleviate human labor in redrawing keyframes with ordered vector strokes for automatic inbetweening, we for the first time propose a joint stroke tracing and correspondence approach. 
+    Given consecutive raster keyframes along with a single vector image of the starting frame as a guidance, the approach generates vector drawings for the remaining keyframes while ensuring one-to-one stroke correspondence.
+    Our framework trained on clean line drawings generalizes to rough sketches and the generated results can be imported into inbetweening systems to produce inbetween sequences.
+    Hence, the method is compatible with standard 2D animation workflow.
+    An adaptive spatial transformation module (ASTM) is introduced to handle non-rigid motions and stroke distortion.
+    We collect a dataset for training, with 10k+ pairs of raster frames and their vector drawings with stroke correspondence.
+    Comprehensive validations on real clean and rough animated frames manifest the effectiveness of our method and superiority to existing methods. 
+  </div>
+  <div class="link">
+    <a href="https://dl.acm.org/doi/10.1145/3649890" target="_blank">[Paper]</a>&nbsp; &nbsp;
+    <a href="https://markmohr.github.io/files/TOG2024/SketchTracing_TOG2024_supplemental.pdf" target="_blank">[Supplementary]</a>&nbsp; &nbsp;
+	  <a href="https://github.com/MarkMoHR/JoSTC" target="_blank">[Code]</a>&nbsp; &nbsp;
+    <a href="https://drive.google.com/file/d/1s6H2qAplsVLw8mis9Gjxp2iOopkrAZhO/view?usp=sharing" target="_blank">[Vector results]</a>&nbsp; &nbsp;
+  </div>
+</div>
+<!-- === Overview Section Ends === -->
+
+
+<!-- === Result Section Starts === -->
+<div class="section">
+  <div class="title">Method</div>
+  <br>
+  <div class="body">
+    <p style="text-align:center; font-size:23px; font-weight:bold">Framework Overview<p>
+    <img src="figures/framework.png" width="100%">
+    <br>
+    <br>
+    <font size="4">
+      Our framework takes as inputs consecutive raster frames, denoted as reference and target, along with a vector drawing of the reference containing several stroke chains (i.e., long curves), each of which comprises connected strokes.
+      It performs a joint stroke tracing and correspondence task by generating corresponding vector strokes one by one (a).
+      It consists of two models: one for matching starting point of each stroke chain (b), the other for predicting parameters of the associated strokes (c).
+      The whole process works in a local view based on patches cropped by windows.
+      A proposed plug-and-play adaptive spatial transformation module (ASTM) is integrated into the two models to handle large motions or stroke distortion.
+    </font>
+    <br>
+    <br>
+
+    <p style="text-align:center; font-size:23px; font-weight:bold">
+      Overall Introduction
+    <p>
+    <p style="text-align:center; font-size:20px">
+      (Or watch on <a href="https://www.bilibili.com/video/BV1cJ4m1V7iD/" target="_blank">Bilibili</a>)
+      <br>
+      👇
+    <p>
+    <div style="position: relative; padding-top: 50%; text-align: center;">
+      <iframe src="https://www.youtube.com/embed/s9oQliUTcsQ" frameborder=0
+              style="position: absolute; top: 1%; left: 10%; width: 80%; height: 100%;"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin" 
+              allowfullscreen></iframe>
+    </div>
+
+  </div>
+</div>
+<!-- === Result Section Ends === -->
+
+<!-- === Result Section Starts === -->
+<div class="section">
+  <div class="title">Results</div>
+  <div class="body">
+    Our framework is applicable to real clean and rough animated frames of various resolutions and with fairly complex motions.
+
+    <p style="margin-top: 10pt; text-align:center; font-size:23px; font-weight:bold">Clean Line Drawings<p>
+    <table width="100%" style="margin: 0pt auto; text-align: center; border-collapse: separate; border-spacing: 5pt;">
+      <tr>
+        <td width="16%"><img src="figures/inbetweens/0-reference.png" width="100%"></td>
+        <td width="16%"><img src="figures/inbetweens/0.png" width="100%"></td>
+        <td width="10%"><img src="figures/inbetweens/0-dynamic.gif" width="100%"></td>
+        <td width="4%"></td>
+        <td width="16%"><img src="figures/inbetweens/5-reference.png" width="100%"></td>
+        <td width="16%"><img src="figures/inbetweens/5.png" width="100%"></td>
+        <td width="16%"><img src="figures/inbetweens/5-dynamic.gif" width="100%"></td>
+      </tr>
+    </table>
+    Hand from <a href="https://onlinelibrary.wiley.com/doi/full/10.1111/j.1467-8659.2009.01630.x" target="_blank">paper</a><sup>[3]</sup> ©2010 Blackwell Publishing Ltd. Eagle from <a href="https://ieeexplore.ieee.org/abstract/document/7831370" target="_blank">paper</a><sup>[4]</sup> is courtesy of Jie Li ©2018, IEEE.
+    <table width="100%" style="margin: 0pt auto; text-align: center; border-collapse: separate; border-spacing: 5pt;">
+      <tr>
+        <td width="19%"><img src="figures/inbetweens/3-reference.png" width="100%"></td>
+        <td width="19%"><img src="figures/inbetweens/3-1.png" width="100%"></td>
+        <td width="19%"><img src="figures/inbetweens/3-2.png" width="100%"></td>
+        <td width="19%"><img src="figures/inbetweens/3-3.png" width="100%"></td>
+        <td width="4%"></td>
+        <td width="20%"><img src="figures/inbetweens/3-dynamic.gif" width="100%"></td>
+      </tr>
+    </table>
+    Stick from <a href="https://ieeexplore.ieee.org/abstract/document/7831370" target="_blank">paper</a><sup>[4]</sup> is courtesy of Jie Li ©2018, IEEE.
+    <table width="100%" style="margin: 0pt auto; text-align: center; border-collapse: separate; border-spacing: 5pt;">
+      <tr>
+        <td width="20%"><img src="figures/inbetweens/4-reference.png" width="100%"></td>
+        <td width="20%"><img src="figures/inbetweens/4-1.png" width="100%"></td>
+        <td width="20%"><img src="figures/inbetweens/4-2.png" width="100%"></td>
+        <td width="40%"><img src="figures/inbetweens/4-dynamic2.gif" width="100%"></td>
+      </tr>
+    </table>
+    Car from <a href="https://ieeexplore.ieee.org/abstract/document/7831370" target="_blank">paper</a><sup>[4]</sup> is courtesy of Jie Li ©2018, IEEE.
+    <br>
+
+    <p style="margin-top: 10pt; text-align:center; font-size:23px; font-weight:bold">Rough Sketches<p>
+    <table width="100%" style="margin: 0pt auto; text-align: center; border-collapse: separate; border-spacing: 5pt;">
+      <tr>
+        <td width="16%"><img src="figures/inbetweens/24-reference.png" width="100%"></td>
+        <td width="16%"><img src="figures/inbetweens/24.png" width="100%"></td>
+        <td width="14%"><img src="figures/inbetweens/24-dynamic.gif" width="100%"></td>
+        <td width="4%"></td>
+        <td width="16%"><img src="figures/inbetweens/27-reference.png" width="100%"></td>
+        <td width="16%"><img src="figures/inbetweens/27.png" width="100%"></td>
+        <td width="16%"><img src="figures/inbetweens/27-dynamic.gif" width="100%"></td>
+      </tr>
+    </table>
+    <table width="100%" style="margin: 0pt auto; text-align: center; border-collapse: separate; border-spacing: 5pt;">
+      <tr>
+        <td width="7%"></td>
+        <td width="16%"><img src="figures/inbetweens/25-reference.png" width="100%"></td>
+        <td width="7%"></td>
+        <td width="16%"><img src="figures/inbetweens/25-1.png" width="100%"></td>
+        <td width="7%"></td>
+        <td width="16%"><img src="figures/inbetweens/25-2.png" width="100%"></td>
+        <td width="7%"></td>
+        <td width="16%"><img src="figures/inbetweens/25-dynamic.gif" width="100%"></td>
+        <td width="7%"></td>
+      </tr>
+    </table>
+    <table width="100%" style="margin: 0pt auto; text-align: center; border-collapse: separate; border-spacing: 5pt;">
+      <tr>
+        <td width="4%"></td>
+        <td width="20%"><img src="figures/inbetweens/21-reference.png" width="100%"></td>
+        <td width="4%"></td>
+        <td width="20%"><img src="figures/inbetweens/21-1.png" width="100%"></td>
+        <td width="4%"></td>
+        <td width="20%"><img src="figures/inbetweens/21-2.png" width="100%"></td>
+        <td width="4%"></td>
+        <td width="20%"><img src="figures/inbetweens/21-dynamic.gif" width="100%"></td>
+        <td width="4%"></td>
+      </tr>
+    </table>
+    These examples are from <a href="https://www.cs.toronto.edu/creativeflow/" target="_blank">Creative Flow+ dataset</a><sup>[2]</sup>.
+    Please see their original rough frames in the following video.
+    <br>
+
+    <p style="margin-top: 10pt; text-align:center; font-size:23px; font-weight:bold">
+      More results of rough sketches
+    <p>
+    <p style="text-align:center; font-size:20px">
+      (Or watch on <a href="https://www.bilibili.com/video/BV1wD421s7wr/" target="_blank">Bilibili</a>)
+      <br>
+      👇
+    <p>
+    <!-- Adjust the frame size based on the demo (EVERY project differs). -->
+    <div style="position: relative; padding-top: 50%; text-align: center;">
+      <iframe src="https://www.youtube.com/embed/-EPfkTH3K1g" frameborder=0
+              style="position: absolute; top: 1%; left: 10%; width: 80%; height: 100%;"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin" 
+              allowfullscreen></iframe>
+    </div>
+    <br>
+
+    <p style="margin-top: 10pt; text-align:center; font-size:23px; font-weight:bold">
+      Comparisons of inbetweening results
+    <p>
+    <p style="text-align:center; font-size:20px">
+      (Or watch on <a href="https://www.bilibili.com/video/BV1kM4m197Gr/" target="_blank">Bilibili</a>)
+      <br>
+      👇
+    <p>
+    <!-- Adjust the frame size based on the demo (EVERY project differs). -->
+    <div style="position: relative; padding-top: 50%; text-align: center;">
+      <iframe src="https://www.youtube.com/embed/FOltwDVMpao" frameborder=0
+              style="position: absolute; top: 1%; left: 10%; width: 80%; height: 100%;"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin" 
+              allowfullscreen></iframe>
+    </div>
+    <br>
+
+    <div class="link">
+      <a href="https://drive.google.com/file/d/1s6H2qAplsVLw8mis9Gjxp2iOopkrAZhO/view?usp=sharing" target="_blank">
+      [Download Vector Results (354KB)]</a>
+    </div>
+
+  </div>
+</div>
+<!-- === Result Section Ends === -->
+
+
+<!-- === Result Section Starts === -->
+<!-- <div class="section">
+  <div class="title">Presentations</div>
+  <div class="body">
+
+    <p style="margin-top: 10pt; text-align:center; font-size:23px; font-weight:bold">
+      3-5 minute presentation
+    <p>
+    <p style="text-align:center; font-size:20px">
+      (Or watch on <a href="https://www.bilibili.com/video/BV1S3411q7VX/" target="_blank">Bilibili</a>)
+      <br>
+      👇
+    <p>
+    <div style="position: relative; padding-top: 50%; text-align: center;">
+      <iframe src="https://www.youtube.com/embed/BSJN1ixacts" frameborder=0
+              style="position: absolute; top: 1%; left: 5%; width: 90%; height: 100%;"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+    </div>
+    <br>
+
+    <div class="link">
+      👉 15-20 minute presentation:
+      <a href="https://youtu.be/D_U4e1qh5qc" target="_blank">[YouTube]</a>
+      <a href="https://www.bilibili.com/video/BV1uU4y1E7Wg/" target="_blank">[Bilibili]</a>
+    </div>
+
+    <div class="link">
+      👉 30-second fast forward:
+      <a href="https://youtu.be/d0EbSU_EeFg" target="_blank">[YouTube]</a>
+      <a href="https://www.bilibili.com/video/BV1vq4y1M7j1/" target="_blank">[Bilibili]</a>
+    </div>
+
+  </div>
+</div> -->
+<!-- === Result Section Ends === -->
+
+
+<!-- === Reference Section Starts === -->
+<div class="section">
+  <div class="bibtex">BibTeX</div>
+<pre>
+@article{mo2024joint,
+  title={Joint Stroke Tracing and Correspondence for 2D Animation},
+  author={Mo, Haoran and Gao, Chengying and Wang, Ruomei},
+  journal={ACM Transactions on Graphics},
+  year={2024},
+  publisher={ACM New York, NY}
+}
+</pre>
+
+  <br>
+  <div class="bibtex">References</div>
+  <div class="citation">
+    <div class="comment">
+      [1] Wenwu Yang, Hock-Soon Seah, Quan Chen, Hong-Ze Liew, and Daniel Sýkora.
+      <strong>FTP-SC: Fuzzy Topology Preserving Stroke Correspondence</strong>. SCA 2018.
+      [<a href="https://dcgi.fel.cvut.cz/home/sykorad/Yang18-SCA.pdf">Paper</a>]
+      [<a href="https://dcgi.fel.cvut.cz/home/sykorad/FTP-SC.html">Webpage</a>]
+      <br>
+    </div>
+
+    <div class="comment">
+      [2] Maria Shugrina, Ziheng Liang, Amlan Kar, Jiaman Li, Angad Singh, Karan Singh, and Sanja Fidler.
+      <strong>Creative flow+ dataset</strong>. CVPR 2019.
+      [<a href="https://www.cs.toronto.edu/creativeflow/files/2596.pdf">Paper</a>]
+      [<a href="https://www.cs.toronto.edu/creativeflow/">Webpage</a>]
+      <br>
+    </div>
+
+    <div class="comment">
+      [3] Brian Whited, Gioacchino Noris, Maryann Simmons, Robert W Sumner, Markus Gross, and Jarek Rossignac.
+      <strong>BetweenIT: An Interactive Tool for Tight Inbetweening</strong>. CGF 2010.
+      [<a href="https://onlinelibrary.wiley.com/doi/full/10.1111/j.1467-8659.2009.01630.x">Paper</a>]
+      <br>
+    </div>
+
+    <div class="comment">
+      [4] Wenwu Yang.
+      <strong>Context-Aware Computer Aided Inbetweening</strong>. TVCG 2017.
+      [<a href="https://ieeexplore.ieee.org/abstract/document/7831370">Paper</a>]
+      <br>
+    </div>
+
+
+  </div>
+</div>
+<!-- === Reference Section Ends === -->
+
+
+</body>
+</html>
