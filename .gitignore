@@ -1,0 +1,21 @@
+.idea
+.idea/
+data/
+datas/
+dataset/
+datasets/
+model/
+models/
+testData/
+output/
+outputs/
+
+*.csv
+
+# temporary files
+*.txt~
+*.pyc
+.DS_Store
+.gitignore~
+
+*.h5
