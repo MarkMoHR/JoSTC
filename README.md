@@ -41,6 +41,10 @@ models/
 
 ### Create Reference Vector Frames with Krita
 
+Our method takes as inputs consecutive raster keyframes and a single vector drawing from the starting keyframe, and then generates vector images for the remaining keyframes with one-to-one stroke correspondence. So we have to create the vector image for the reference frame here. 
+
+**Note**: We provide several examples for testing in directory `sample_inputs/`. If you use them, you can skip step-1 and step-2 below and execute step-3 directly.
+
 1. Our method takes squared images as input, so please preprocess the images first using [tools/image_squaring.py](https://github.com/MarkMoHR/JoSTC/blob/main/tools/image_squaring.py):
 ```
 python3 tools/image_squaring.py --file path/to/the/image.png
