@@ -111,6 +111,9 @@ If you use the code and models please cite:
   title={Joint Stroke Tracing and Correspondence for 2D Animation},
   author={Mo, Haoran and Gao, Chengying and Wang, Ruomei},
   journal={ACM Transactions on Graphics},
+  volume={43},
+  number={3},
+  pages={1--17},
   year={2024},
   publisher={ACM New York, NY}
 }
