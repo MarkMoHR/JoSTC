@@ -1,5 +1,9 @@
 # Joint Stroke Tracing and Correspondence for 2D Animation - TOG & SIGGRAPH 2024
 
+:star2::star2::star2: $\color{red}{\textbf{[NEWS]}}$ Find the extended version of this method: [LayerInbetween](https://github.com/MarkMoHR/LayerInbetween) in SIGGRAPH 2026 (TOG).
+
+---
+
 [[Paper]](https://www.sysu-imsl.com/files/TOG2024/SketchTracing_TOG2024_personal.pdf) | [[Paper (ACM)]](https://dl.acm.org/doi/10.1145/3649890) | [[Project Page]](https://markmohr.github.io/JoSTC/)
 
 This code is used for producing stroke tracing and correspondence results, which can be imported into an inbetweening product named [CACANi](https://cacani.sg) for making 2D animations.
